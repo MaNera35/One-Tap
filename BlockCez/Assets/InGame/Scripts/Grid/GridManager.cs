@@ -13,6 +13,16 @@ public class GridManager : MonoBehaviour
     private GameModeBase currentMode;
     private int size;
 
+
+    private void OnEnable()
+    {
+        //GameEvents.OnReturnToMenu += ResetGame;
+    }
+    private void OnDisable()
+    {
+        //GameEvents.OnReturnToMenu -= ResetGame;
+    }
+
     #region Unity
     private void Awake()
     {
@@ -21,26 +31,34 @@ public class GridManager : MonoBehaviour
 
     private void Update()
     {
+        if (!gridParent.gameObject.activeInHierarchy) return;
         currentMode?.Update();
     }
     #endregion
 
     #region Grid Setup
-
-
-    public void SetMode(GameModeBase mode)
+    public void SetMode(GameModeBase mode, GameModeSettings settings)
     {
+        ResetGame();
+
         currentMode = mode;
-        currentMode.Init(this);
+        currentMode.Init(this, settings);
         size = currentMode.GetSize();
+
+        UIManager.Instance.ConfigureUI(currentMode);
+        GenerateNewLevel(size, settings);
+        currentMode.OnLevelStart();
     }
 
-    public void GenerateNewLevel(int newSize)
+    public void GenerateNewLevel(int newSize, GameModeSettings settings)
     {
+        size = newSize;
         gridLayout.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
         gridLayout.constraintCount = size;
 
         InitGrid();
+        GenerateSolvedGrid();
+        ScrambleGrid(settings.scrambleMoves);
         UpdateVisuals();
     }
 
@@ -58,9 +76,27 @@ public class GridManager : MonoBehaviour
             {
                 GameObject obj = Instantiate(cellPrefab, gridParent);
                 Cell cell = obj.GetComponent<Cell>();
+                if (cell == null) Debug.LogError("Cell prefab missing Cell component!");
                 cell.Init(x, y, this);
                 cells[x, y] = cell;
             }
+        }
+    }
+
+    private void GenerateSolvedGrid()
+    {
+        for (int y = 0; y < size; y++)
+            for (int x = 0; x < size; x++)
+                grid[x, y] = 0;
+    }
+
+    private void ScrambleGrid(int moveCount)
+    {
+        for (int i = 0; i < moveCount; i++)
+        {
+            int x = Random.Range(0, size);
+            int y = Random.Range(0, size);
+            ApplyToggleLogic(x, y);
         }
     }
     #endregion
@@ -105,9 +141,15 @@ public class GridManager : MonoBehaviour
 
     public void UpdateVisuals()
     {
+        if (cells == null) return; // grid yoksa çýk
         for (int y = 0; y < size; y++)
+        {
             for (int x = 0; x < size; x++)
-                cells[x, y].SetState(grid[x, y]);
+            {
+                if (cells[x, y] != null) // null kontrolü
+                    cells[x, y].SetState(grid[x, y]);
+            }
+        }
     }
 
     public int Size => size;
@@ -123,6 +165,23 @@ public class GridManager : MonoBehaviour
                     return false;
 
         return true;
+    }
+    #endregion
+
+    #region Game Reset
+    public void ResetGame()
+    {
+        // Sahnedeki tüm hücreleri sil
+        foreach (Transform child in gridParent)
+            Destroy(child.gameObject);
+
+        // Grid ve cells arraylerini temizle
+        grid = null;
+        cells = null;
+
+        // Mod ve size sýfýrla
+        currentMode = null;
+        size = 0;
     }
     #endregion
 }

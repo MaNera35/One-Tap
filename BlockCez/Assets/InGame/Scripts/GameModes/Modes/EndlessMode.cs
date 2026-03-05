@@ -1,4 +1,3 @@
-using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 
 public class EndlessMode : GameModeBase
@@ -8,12 +7,6 @@ public class EndlessMode : GameModeBase
     {
         return true; 
     }
-
-    public override void Init(GridManager grid)
-    {
-        currentGrid = grid;
-    }
-
     public override void OnMove()
     {
         Debug.Log("Hamle Yaptin");
@@ -28,10 +21,5 @@ public class EndlessMode : GameModeBase
     public override void Update()
     {
         Debug.Log("Update calisiyo");
-    }
-
-    public override int GetSize()
-    {
-        return 15;
     }
 }

@@ -3,20 +3,35 @@ using UnityEngine;
 public class GameController : MonoBehaviour
 {
     [SerializeField] private GridManager gridManager;
+    [SerializeField] private UIManager uiManager;
 
+    [SerializeField] private GameModeSettings endlessSettings;
+    [SerializeField] private GameModeSettings moveLimitSettings;
+    [SerializeField] private GameModeSettings timeAttackSettings;
+
+
+    public void StartTimeAttackGame()
+    {
+        StartMode(new TimeAttackMode(), timeAttackSettings);
+    }
     public void StartEndlessGame()
     {
-        EndlessMode mode = new EndlessMode();
-        gridManager.SetMode(mode);
-        gridManager.GenerateNewLevel(10);
+        StartMode(new EndlessMode(), endlessSettings);
     }
 
-    public void StartTestGame()
+    public void StartMoveLimitGame()
     {
-        TestMode mode = new TestMode();
-        gridManager.SetMode(mode);
-        gridManager.GenerateNewLevel(25);
-
+        StartMode(new MoveLimitMode(), moveLimitSettings);
     }
 
+    private void StartMode(GameModeBase mode, GameModeSettings settings)
+    {
+        mode.Init(gridManager, settings);
+        uiManager.ConfigureUI(mode);
+        GameEvents.StartGame();
+
+        gridManager.SetMode(mode, settings);
+
+
+    }
 }
