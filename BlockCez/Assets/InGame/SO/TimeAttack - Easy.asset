@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 650214c00666c9f42ba8c57fc6b14367, type: 3}
   m_Name: TimeAttack - Easy
   m_EditorClassIdentifier: Assembly-CSharp::GameModeSettings
-  gridSize: 9
+  gridSize: 8
   maxMoves: 0
   timeLimit: 15
-  scrambleMoves: 0
+  scrambleMoves: 5
