@@ -46,6 +46,7 @@ public class GridManager : MonoBehaviour
         size = currentMode.GetSize();
 
         UIManager.Instance.ConfigureUI(currentMode);
+        gridParent.gameObject.SetActive(true);
         GenerateNewLevel(size, settings);
         currentMode.OnLevelStart();
     }

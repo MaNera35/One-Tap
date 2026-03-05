@@ -24,8 +24,10 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject gameMenuHolder; // tüm oyun UI tutucusu
     [SerializeField] private GameObject timerUI;        // mode göre açýlýp kapanýyor
     [SerializeField] private GameObject remainingMovesUI; // mode göre açýlýp kapanýyor
+    [SerializeField] private GameObject scoreUI; // mode göre açýlýp kapanýyor
     [SerializeField] private TextMeshProUGUI remainingMovesText; // text referansý direkt inspector üzerinden
     [SerializeField] private TextMeshProUGUI timerUIText; // text referansý direkt inspector üzerinden
+    [SerializeField] private TextMeshProUGUI scoreUIText; // text referansý direkt inspector üzerinden
 
     [Header("Pop-up UI Elements")]
     [SerializeField] private GameObject losePopup;
@@ -36,6 +38,10 @@ public class UIManager : MonoBehaviour
         GameEvents.OnGameStart += HandleGameStart;
         GameEvents.OnGameLose += ShowLosePopup;
         GameEvents.OnReturnToMenu += ShowMainMenu;
+
+
+        //Score
+        ScoreManager.OnScoreChanged += UpdateScoreText;
     }
 
     private void OnDisable()
@@ -43,6 +49,9 @@ public class UIManager : MonoBehaviour
         GameEvents.OnGameStart -= HandleGameStart;
         GameEvents.OnGameLose -= ShowLosePopup;
         GameEvents.OnReturnToMenu -= ShowMainMenu;
+
+        //Score
+        ScoreManager.OnScoreChanged -= UpdateScoreText;
     }
     #endregion
 
@@ -54,6 +63,9 @@ public class UIManager : MonoBehaviour
 
         if (remainingMovesUI != null)
             remainingMovesUI.SetActive(mode.UseMoveLimit());
+
+        if (scoreUI != null)
+            scoreUI.SetActive(mode.UseScore());
     }
 
     public void UpdateMoveText(int move)
@@ -65,6 +77,12 @@ public class UIManager : MonoBehaviour
     {
         if (timerUIText != null)
             timerUIText.text = "KALAN ZAMAN: " + Mathf.RoundToInt(time).ToString("F2");
+    }
+
+    public void UpdateScoreText(int newScore)
+    {
+        if (scoreUIText != null)
+            scoreUIText.text = "SCORE: " + newScore.ToString();
     }
 
     public void HandleGameStart()

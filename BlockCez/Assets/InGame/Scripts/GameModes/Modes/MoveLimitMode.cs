@@ -11,6 +11,8 @@ public class MoveLimitMode : GameModeBase
 
     public override void OnLevelStart()
     {
+        base.OnLevelStart();
+
         UIManager.Instance.UpdateMoveText(remainingMoves);
     }
 
@@ -29,6 +31,7 @@ public class MoveLimitMode : GameModeBase
     {
         remainingMoves += 5;
         UIManager.Instance.UpdateMoveText(remainingMoves);
+        ScoreManager.Instance.AddScore(10);
 
         currentGrid.GenerateNewLevel(settings.gridSize,settings);
     }
@@ -39,6 +42,11 @@ public class MoveLimitMode : GameModeBase
     }
 
     public override bool UseMoveLimit()
+    {
+        return true;
+    }
+
+    public override bool UseScore()
     {
         return true;
     }

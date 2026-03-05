@@ -2,6 +2,11 @@ using UnityEngine;
 
 public class EndlessMode : GameModeBase
 {
+    public override bool UseScore()
+    {
+        return true;
+    }
+
 
     public override bool CanMakeMove()
     {
@@ -9,7 +14,7 @@ public class EndlessMode : GameModeBase
     }
     public override void OnMove()
     {
-        Debug.Log("Hamle Yaptin");
+        ScoreManager.Instance.AddScore(10);
 
     }
 

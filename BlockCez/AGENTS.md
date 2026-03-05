@@ -2,7 +2,7 @@
 - Project name: BlockCez
 - Unity version: Unity 6000.3.9f1
 - Active game object:
-  - Name: EndlessModeButton
+  - Name: ScoreManager
   - Tag: Untagged
-  - Layer: UI
+  - Layer: Default
 <!-- UNITY CODE ASSIST INSTRUCTIONS END -->

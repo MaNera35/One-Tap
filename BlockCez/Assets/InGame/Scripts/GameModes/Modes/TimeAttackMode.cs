@@ -6,6 +6,8 @@ public class TimeAttackMode : GameModeBase
 
     public override void OnLevelStart()
     {
+        base.OnLevelStart();
+
         remainingTime = settings.timeLimit;
     }
 
@@ -21,7 +23,7 @@ public class TimeAttackMode : GameModeBase
 
     public override void OnWin()
     {
-        
+        ScoreManager.Instance.AddScore(10);
     }
 
     public override void Update()
@@ -38,6 +40,11 @@ public class TimeAttackMode : GameModeBase
     }
 
     public override bool UseTimer()
+    {
+        return true;
+    }
+
+    public override bool UseScore()
     {
         return true;
     }

@@ -14,12 +14,13 @@ public abstract class GameModeBase
 
     public virtual void OnLevelStart()
     {
-        
+        ScoreManager.Instance.ResetScore();
     }
 
     // Hangi UI aktif olacak (timer / move limit)
     public virtual bool UseTimer() => false;
     public virtual bool UseMoveLimit() => false;
+    public virtual bool UseScore() => false;
 
     // Mode’un grid boyutu artýk settings’ten okunacak
     public virtual int GetSize() => settings != null ? settings.gridSize : 5;
