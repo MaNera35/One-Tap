@@ -10,7 +10,7 @@ public class GridManager : MonoBehaviour
     private int[,] grid;
     private Cell[,] cells;
 
-    private GameModeBase currentMode;
+    public GameModeBase currentMode;
     private int size;
 
 

@@ -25,6 +25,8 @@ public abstract class GameModeBase
     // Mode’un grid boyutu artýk settings’ten okunacak
     public virtual int GetSize() => settings != null ? settings.gridSize : 5;
 
+    public GameModeSettings GetMode() => settings;
+
     // Her modun implement etmesi gereken metodlar
     public abstract bool CanMakeMove();
     public abstract void OnMove();

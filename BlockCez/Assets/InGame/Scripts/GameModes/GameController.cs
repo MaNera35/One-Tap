@@ -31,7 +31,12 @@ public class GameController : MonoBehaviour
         GameEvents.StartGame();
 
         gridManager.SetMode(mode, settings);
+    }
 
-
+    public void StartReplayGame()
+    {
+        GameModeBase modbase = gridManager.currentMode;
+        GameModeSettings modbaseSettings = modbase.GetMode();
+        StartMode(modbase, modbaseSettings);
     }
 }

@@ -25,6 +25,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject timerUI;        // mode göre açýlýp kapanýyor
     [SerializeField] private GameObject remainingMovesUI; // mode göre açýlýp kapanýyor
     [SerializeField] private GameObject scoreUI; // mode göre açýlýp kapanýyor
+    [SerializeField] private GameObject gameModeInfoUI; // mode göre açýlýp kapanýyor
     [SerializeField] private TextMeshProUGUI remainingMovesText; // text referansý direkt inspector üzerinden
     [SerializeField] private TextMeshProUGUI timerUIText; // text referansý direkt inspector üzerinden
     [SerializeField] private TextMeshProUGUI scoreUIText; // text referansý direkt inspector üzerinden
@@ -58,6 +59,10 @@ public class UIManager : MonoBehaviour
     #region Public Methods
     public void ConfigureUI(GameModeBase mode)
     {
+        if(mode.UseTimer() || mode.UseMoveLimit())
+            gameModeInfoUI.SetActive(true);
+        else gameModeInfoUI.SetActive(false);
+
         if (timerUI != null)
             timerUI.SetActive(mode.UseTimer());
 
